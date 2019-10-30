@@ -14,12 +14,14 @@ router.post('/registration', async ctx => {
       lastName,
       position,
     } = ctx.request.body;
+
     const collection = ctx.db.collection('users');
     const users = await collection
       .find({ email })
       .toArray();
 
     if (users.length !== 0) ctx.throw(400, 'Such user is already registered');
+
     const passwordHash = await bcrypt.hash(password, 8);
     const { insertedId } = await collection.insertOne({
       email,
@@ -29,10 +31,46 @@ router.post('/registration', async ctx => {
       position,
       role: 'admin',
     });
+
     const token = createToken(insertedId);
     ctx.body = { token };
   } catch (err) {
     ctx.throw(500, err);
+  }
+});
+
+router.use(async (ctx, next) => {
+  await next();
+
+  if ('password' in ctx.response.body.user) {
+    delete ctx.response.body.user.password;
+  }
+
+  if ('_id' in ctx.response.body.user) {
+    delete ctx.response.body.user._id;
+  }
+});
+
+router.post('/authorization', async ctx => {
+  try {
+    const {
+      email,
+      password,
+    } = ctx.request.body;
+
+    const collection = ctx.db.collection('users');
+    const user = await collection.findOne({ email });
+
+    if (!user) ctx.throw(401, 'Check email and password');
+
+    const isCorrectPassword = await bcrypt.compare(password, user.password);
+
+    if (!isCorrectPassword) ctx.throw(401, 'Check email and password');
+
+    const token = createToken(user._id);
+    ctx.body = { token, user };
+  } catch (err) {
+    ctx.throw(err);
   }
 });
 
