@@ -1,0 +1,18 @@
+{
+  "app": {
+    "port": "3000",
+    "hostDev": "localhost"
+  },
+  "mongodb": {
+    "server": "localhost",
+    "port": "27017",
+    "name": "armando"
+  },
+  "jwt": {
+    "user": {
+      "secret": "M2vzC8ZXDPfcHGgEcHzqqxFn2BSVf8jb3JScmnCYkgNAh5yyFqUBMqLNXWH6pA8kFWugWzzn3tvmRHSBFbav8RrBA8nYLMRBck5vEAWzKREWLDtXd3CjgkWEAt5dxhpFqvPE7Dg9Cpsxag23UKXh4sLHyB5YJWPL66H3CcGsjf8a2NEbEfs5MukQeVsUeSMPcterVRmQ6VzEHdx4qJMfRvKex6Mgp5M7HSsdGkgebzb4sjhwdWz3MXWezP6tXgfEhVsCW7xDGpH5ECcKR3pn72KXTKJ3dv3nJjsJzKcdsrra6QLzAXkvgVdMQDQSkNSKy6ZeC57gyxRpN9ebmQCfvgcUy7378gpa7jLuHwnTsAds7M9FMkDdgQfdjYDVHc6RhhgExGUM5NAA8btBgbe8nqfEpd4NpKesZ8t6WFQ9SHU65Srt9juSW3KeLLeQdrQftpSBDRmuGhXTY8WGnDvM3maz7eSgFTrNA2PEGAFVqKtYUyza9kWf8FfaSTBysASM",
+      "expiresIn": "7d",
+      "header": "token-armando"
+    }
+  }
+}
