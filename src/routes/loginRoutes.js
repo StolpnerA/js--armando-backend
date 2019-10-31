@@ -5,6 +5,18 @@ const createToken = require('../helpers/createToken');
 
 const router = new Router({ prefix: '/auth' });
 
+router.use(async (ctx, next) => {
+  await next();
+
+  if ('password' in ctx.response.body.user) {
+    delete ctx.response.body.user.password;
+  }
+
+  if ('_id' in ctx.response.body.user) {
+    delete ctx.response.body.user._id;
+  }
+});
+
 router.post('/registration', async ctx => {
   try {
     const {
@@ -23,7 +35,7 @@ router.post('/registration', async ctx => {
     if (users.length !== 0) ctx.throw(400, 'Such user is already registered');
 
     const passwordHash = await bcrypt.hash(password, 8);
-    const { insertedId } = await collection.insertOne({
+    const { ops: [ user ], insertedId } = await collection.insertOne({
       email,
       password: passwordHash,
       firstName,
@@ -33,21 +45,9 @@ router.post('/registration', async ctx => {
     });
 
     const token = createToken(insertedId);
-    ctx.body = { token };
+    ctx.body = { token, user };
   } catch (err) {
     ctx.throw(500, err);
-  }
-});
-
-router.use(async (ctx, next) => {
-  await next();
-
-  if ('password' in ctx.response.body.user) {
-    delete ctx.response.body.user.password;
-  }
-
-  if ('_id' in ctx.response.body.user) {
-    delete ctx.response.body.user._id;
   }
 });
 
