@@ -40,4 +40,35 @@ router.post('/task/:taskId', async ctx => {
   }
 });
 
+router.put('/:id', async ctx => {
+  try {
+    const { id } = ctx.params;
+    const { description, status } = ctx.request.body;
+
+    const collection = ctx.db.collection('todo');
+    const { value: todo } = await collection.findOneAndUpdate(
+      {
+        _id: ctx.ObjectID(id),
+      },
+      {
+        $set: {
+          description,
+          changedAt: new Date(),
+          status,
+        },
+      },
+      {
+        projection: { taskId: 0 },
+        returnOriginal: false,
+      },
+    );
+
+    if (!todo) ctx.throw(400);
+
+    ctx.body = todo;
+  } catch (err) {
+    ctx.throw(500, err);
+  }
+});
+
 module.exports = router;
