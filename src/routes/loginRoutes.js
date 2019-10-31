@@ -32,7 +32,7 @@ router.post('/registration', async ctx => {
       .find({ email })
       .toArray();
 
-    if (users.length !== 0) ctx.throw(400, 'Such user is already registered');
+    if (users.length !== 0) ctx.throw(400, 'Such user already exists');
 
     const passwordHash = await bcrypt.hash(password, 8);
     const { ops: [ user ], insertedId } = await collection.insertOne({
@@ -70,7 +70,7 @@ router.post('/authorization', async ctx => {
     const token = createToken(user._id);
     ctx.body = { token, user };
   } catch (err) {
-    ctx.throw(err);
+    ctx.throw(500, err);
   }
 });
 
