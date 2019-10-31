@@ -5,7 +5,20 @@ const router = new Router({ prefix: '/todo' });
 
 router.use(checkAuth);
 
-router.post('/:taskId', async ctx => {
+router.get('/task/:taskId', async ctx => {
+  try {
+    const { taskId } = ctx.params;
+    const collection = ctx.db.collection('todo');
+    ctx.body = await collection.find(
+      { taskId },
+      { projection: { taskId: 0 } }
+    ).toArray();
+  } catch (err) {
+    ctx.throw(500, err);
+  }
+});
+
+router.post('/task/:taskId', async ctx => {
   try {
     const { taskId } = ctx.params;
     const { description } = ctx.request.body;
