@@ -47,7 +47,7 @@ router.put('/:id', async ctx => {
         _id: ctx.ObjectID(id),
       },
       {
-        $set: { name },
+        $set: { name, changedAt: new Date() },
       },
       {
         projection: { userId: 0 },
