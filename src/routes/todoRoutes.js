@@ -71,4 +71,18 @@ router.put('/:id', async ctx => {
   }
 });
 
+router.delete('/:id', async ctx => {
+  try {
+    const { id } = ctx.params;
+    const collection = ctx.db.collection('todo');
+    const { result } = await collection.deleteOne({ _id: ctx.ObjectID(id) });
+    
+    if (!result.ok || !result.n) ctx.throw(400);
+
+    ctx.status = 200;
+  } catch (err) {
+     ctx.throw(500, err);
+  }
+});
+
 module.exports = router;
