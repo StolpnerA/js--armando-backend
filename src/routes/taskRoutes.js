@@ -5,6 +5,17 @@ const router = new Router({ prefix: '/tasks' });
 
 router.use(checkAuth);
 
+router.get('/', async ctx => {
+  try {
+    const collection = ctx.db.collection('tasks');
+    ctx.body = await collection.find({
+      userId: ctx.state.userId,
+    }, { projection: { userId: 0 } }).toArray();
+  } catch (err) {
+    ctx.throw(500, err);
+  }
+});
+
 router.post('/', async ctx => {
   try {
     const { name } = ctx.request.body;
@@ -26,12 +37,27 @@ router.post('/', async ctx => {
   }
 });
 
-router.get('/', async ctx => {
+router.put('/:id', async ctx => {
   try {
+    const { id } = ctx.params;
+    const { name } = ctx.request.body;
     const collection = ctx.db.collection('tasks');
-    ctx.body = await collection.find({
-      userId: ctx.state.userId,
-    }, { projection: { userId: 0 } }).toArray();
+    const { value: task } = await collection.findOneAndUpdate(
+      {
+        _id: ctx.ObjectID(id),
+      },
+      {
+        $set: { name },
+      },
+      {
+        projection: { userId: 0 },
+        returnOriginal: false,
+      },
+    );
+
+    if (!task) ctx.throw(400);
+
+    ctx.body = task;
   } catch (err) {
     ctx.throw(500, err);
   }
