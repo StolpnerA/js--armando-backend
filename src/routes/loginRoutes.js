@@ -41,7 +41,7 @@ router.post('/registration', async ctx => {
       firstName,
       lastName,
       position,
-      role: 'admin',
+      role: 'user',
     });
 
     const token = createToken(insertedId);

@@ -76,7 +76,7 @@ router.delete('/:id', async ctx => {
     const { id } = ctx.params;
     const collection = ctx.db.collection('todo');
     const { result } = await collection.deleteOne({ _id: ctx.ObjectID(id) });
-    
+
     if (!result.ok || !result.n) ctx.throw(400);
 
     ctx.status = 200;
