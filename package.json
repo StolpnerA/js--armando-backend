@@ -1,25 +1,22 @@
 {
-  "name": "js--diplom-backend",
+  "name": "js--armando-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Diploma at BSUIR",
   "main": "src/app.js",
   "scripts": {
     "start": "nodemon ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Andrey Stolpner",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
     "koa-combine-routers": "^4.0.2",
     "koa-router": "^7.4.0",
-    "mongodb": "^3.3.3",
-    "mongoose": "^5.7.7"
+    "mongodb": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"
