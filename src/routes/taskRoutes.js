@@ -63,4 +63,29 @@ router.put('/:id', async ctx => {
   }
 });
 
+router.delete('/:id', async ctx => {
+  try {
+    const { id } = ctx.params;
+    const collectionTasks = ctx.db.collection('tasks');
+    const { result: resultTasks } = await collectionTasks.deleteOne(
+      { _id: ctx.ObjectID(id) }
+    );
+
+    if (!resultTasks.ok || !resultTasks.n) ctx.throw(400);
+
+    const collectionTodo = ctx.db.collection('todo');
+    const { result: resultTodo } = await collectionTodo.deleteMany(
+      {
+        taskId: id,
+      }
+    );
+
+    if (!resultTodo.ok || !resultTodo.n) ctx.throw(400);
+
+    ctx.body = 'deleted';
+  } catch (err) {
+    ctx.throw(500, err);
+  }
+});
+
 module.exports = router;
