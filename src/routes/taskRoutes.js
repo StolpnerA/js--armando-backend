@@ -74,13 +74,11 @@ router.delete('/:id', async ctx => {
     if (!resultTasks.ok || !resultTasks.n) ctx.throw(400);
 
     const collectionTodo = ctx.db.collection('todo');
-    const { result: resultTodo } = await collectionTodo.deleteMany(
+    await collectionTodo.deleteMany(
       {
         taskId: id,
       }
     );
-
-    if (!resultTodo.ok || !resultTodo.n) ctx.throw(400);
 
     ctx.body = 'deleted';
   } catch (err) {

@@ -10,10 +10,11 @@ const app = new Koa();
 app.use(bodyParser());
 
 app.use(async (ctx, next) => {
+  console.log('\x1b[30;47m%s', `START - ${ctx.method} ${ctx.url}`, '\x1b[0m');
   const start = Date.now();
   await next();
   const ms = Date.now() - start;
-  console.log('\x1b[30;47m%s', `${ctx.method} ${ctx.url} - ${ms}`, '\x1b[0m');
+  console.log('\x1b[30;47m%s', `FINISH - ${ctx.method} ${ctx.url} - ${ms}`, '\x1b[0m');
 });
 
 app.use(router());
