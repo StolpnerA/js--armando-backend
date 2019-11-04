@@ -8,9 +8,12 @@ router.use(checkAuth);
 router.get('/', async ctx => {
   try {
     const collection = ctx.db.collection('tasks');
-    ctx.body = await collection.find({
-      userId: ctx.state.userId,
-    }, { projection: { userId: 0 } }).toArray();
+    ctx.body = await collection.find(
+      {
+        userId: ctx.state.userId,
+      },
+      { projection: { userId: 0 } }
+    ).toArray();
   } catch (err) {
     ctx.throw(500, err);
   }
