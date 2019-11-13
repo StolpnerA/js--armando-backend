@@ -8,6 +8,8 @@ const url = process.env.NODE_ENV === 'dev'
   ? `mongodb://${serverDev}:${port}/`
   : process.env.MONGODB_URI;
 
+console.log(process.env.MONGODB_URI);
+
 const dbName = process.env.NODE_ENV === 'dev'
   ? nameDev
   : name;
