@@ -3,10 +3,14 @@
     "port": "3000",
     "hostDev": "localhost"
   },
-  "mongodb": {
+  "mongodbDev": {
     "server": "localhost",
     "port": "27017",
     "name": "armando"
+  },
+  "mongodb": {
+    "server": "mongodb://heroku_d1wpqc13:arleq5cj85sek8ibvs105v2t0b@ds043338.mlab.com:43338/heroku_d1wpqc13",
+    "name": "heroku_d1wpqc13"
   },
   "jwt": {
     "user": {

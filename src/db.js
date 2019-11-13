@@ -1,12 +1,23 @@
 const { MongoClient } = require('mongodb');
-const { mongodb: { server, port, name } } = require('./config');
+const {
+  mongodbDev: { server: serverDev, port, name: nameDev },
+  mongodb: { server, name }
+} = require('./config');
+
+const url = process.env.NODE_ENV === 'dev'
+  ? `mongodb://${serverDev}:${port}/`
+  : server;
+
+const dbName = process.env.NODE_ENV === 'dev'
+  ? nameDev
+  : name;
 
 module.exports = MongoClient.connect(
-  `mongodb://${server}:${port}/`,
+  url,
   { useUnifiedTopology: true }
 )
   .then(client => {
     console.log('MongoDB connected');
-    return client.db(name);
+    return client.db(dbName);
   })
   .catch(err => console.log(err));
