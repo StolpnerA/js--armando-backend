@@ -6,5 +6,4 @@ module.exports = combineRouters([
   require('./taskRoutes'),
   require('./todoRoutes'),
   require('./adminRoutes'),
-  require('./test'),
 ]);

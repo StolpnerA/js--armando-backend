@@ -1,14 +1,12 @@
 const { MongoClient } = require('mongodb');
 const {
   mongodbDev: { server: serverDev, port, name: nameDev },
-  mongodb: { server, name }
+  mongodb: { name }
 } = require('./config');
 
 const url = process.env.NODE_ENV === 'dev'
   ? `mongodb://${serverDev}:${port}/`
   : process.env.MONGODB_URI;
-
-console.log(process.env.MONGODB_URI);
 
 const dbName = process.env.NODE_ENV === 'dev'
   ? nameDev

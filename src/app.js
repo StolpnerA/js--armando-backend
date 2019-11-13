@@ -24,7 +24,7 @@ db.then(async database => {
   app.context.ObjectID = ObjectID;
 
   app.listen(process.env.PORT || port, () => {
-    console.log(`Server running on localhost:${process.env.PORT || port}`);
+    console.log(`Server running on localhost:${ process.env.PORT || port }`);
   });
 });
 
