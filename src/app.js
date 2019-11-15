@@ -1,4 +1,5 @@
 const Koa = require('koa');
+const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
 const db = require('./db');
 const { ObjectID } = require('mongodb');
@@ -6,6 +7,8 @@ const { app: { port } } = require('./config');
 const router = require('./routes');
 
 const app = new Koa();
+
+app.use(cors());
 
 app.use(bodyParser());
 
