@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const checkAuth = require('../middleware/checkAuth');
+const bcrypt = require('bcryptjs');
 
 const router = new Router({ prefix: '/user' });
 
@@ -16,6 +17,40 @@ router.get('/', async ctx => {
         projection: { _id: 0, password: 0 }
       }
     );
+  } catch (err) {
+    ctx.throw(500, err);
+  }
+});
+
+router.put('/edit', async ctx => {
+  try {
+    const {
+      password,
+      firstName,
+      lastName,
+    } = ctx.request.body;
+
+    const passwordHash = await bcrypt.hash(password, 8);
+
+    const collection = ctx.db.collection('users');
+    const { value } = await collection.findOneAndUpdate(
+      {
+        _id: ctx.ObjectID(ctx.state.userId),
+      },
+      {
+        $set: {
+          password: passwordHash,
+          firstName,
+          lastName,
+        }
+      },
+      {
+        returnOriginal: false,
+        projection: { _id: 0, password: 0 }
+      },
+    );
+
+    ctx.body = value;
   } catch (err) {
     ctx.throw(500, err);
   }

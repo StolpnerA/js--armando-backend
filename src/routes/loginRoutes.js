@@ -2,20 +2,11 @@ const Router = require('koa-router');
 const bcrypt = require('bcryptjs');
 
 const createToken = require('../helpers/createToken');
+const clearPropInResponse = require('../middleware/clearPropInResponse');
 
 const router = new Router({ prefix: '/auth' });
 
-router.use(async (ctx, next) => {
-  await next();
-
-  if ('password' in ctx.response.body.user) {
-    delete ctx.response.body.user.password;
-  }
-
-  if ('_id' in ctx.response.body.user) {
-    delete ctx.response.body.user._id;
-  }
-});
+router.use(clearPropInResponse);
 
 router.post('/registration', async ctx => {
   try {
