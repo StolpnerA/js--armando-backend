@@ -9,7 +9,9 @@ router.get('/users', async ctx => {
   try {
     const collection = ctx.db.collection('users');
     ctx.body = await collection.find(
-      {},
+      {
+        role: { $ne: 'admin' },
+      },
       {
         projection: { password: 0 },
       }
@@ -59,7 +61,7 @@ router.put('/user/:id/edit', async ctx => {
         delete dataForEdit[key];
       }
     });
-    
+
     const collection = ctx.db.collection('users');
     const { value } = await collection.findOneAndUpdate(
       {
