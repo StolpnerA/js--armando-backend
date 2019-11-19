@@ -30,7 +30,22 @@ router.put('/edit', async ctx => {
       lastName,
     } = ctx.request.body;
 
-    const passwordHash = await bcrypt.hash(password, 8);
+    const dataForEdit = {
+      password,
+      firstName,
+      lastName,
+    };
+
+    Object.keys(dataForEdit).forEach(key => {
+      if (!dataForEdit[key]) {
+        delete dataForEdit[key];
+      }
+    });
+
+    if (dataForEdit.password) {
+      dataForEdit.password = await bcrypt.hash(password, 8);
+    }
+
 
     const collection = ctx.db.collection('users');
     const { value } = await collection.findOneAndUpdate(
@@ -38,11 +53,7 @@ router.put('/edit', async ctx => {
         _id: ctx.ObjectID(ctx.state.userId),
       },
       {
-        $set: {
-          password: passwordHash,
-          firstName,
-          lastName,
-        }
+        $set: dataForEdit,
       },
       {
         returnOriginal: false,
